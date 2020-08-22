@@ -43,11 +43,11 @@ $listRule = get_rules();
 <body class="navbar-top">
 	<!-- Main navbar -->
 	<div class="navbar navbar-expand-md navbar-dark fixed-top">
-		
-			<a href="index.php" class="navbar-brand">
-				
-			</a>
-	
+
+		<a href="index.php" class="navbar-brand">
+
+		</a>
+
 
 		<div class="d-md-none">
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
@@ -124,7 +124,7 @@ $listRule = get_rules();
 
 							<div class="media-body">
 								<div class="media-title font-weight-semibold">Administrator</div>
-							
+
 							</div>
 
 							<div class="ml-3 align-self-center">
@@ -223,45 +223,46 @@ $listRule = get_rules();
 								<div class="header-elements">
 									<div class="list-icons">
 										<a class="list-icons-item" data-action="collapse"></a>
-									
+
 									</div>
 								</div>
 							</div>
 
 							<div class="card-body">
-                            <div class="table-responsive">
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th class="text-uppercase font-weight-bold">#</th>
-									<th class="text-uppercase font-weight-bold">Durasi</th>
-									<th class="text-uppercase font-weight-bold">Gejala</th>
-                                    <th class="text-uppercase font-weight-bold">Intensitas</th>
-                                    <th class="text-uppercase font-weight-bold">Output</th>
-								</tr>
-							</thead>
-							<tbody>
-                            <?php $no = 1; foreach($listRule as $vals) : ?>
-                            <tr>
-                               <td><?= $no++ ?></td>
-                               <td class="text-uppercase"><?= $vals['durasi'] ?></td>
-                               <td class="text-uppercase"><?= $vals['gejala'] ?></td>
-                               <td class="text-uppercase"><?= $vals['intensitas'] ?></td>
-                               <td class="text-uppercase font-weight-bold"><?= $vals['output'] ?></td>
-                           </tr>
-                          
-                        
-                           <?php endforeach; ?>
-						
-							
-							
-							</tbody>
-						</table>
-					</div>
+								<div class="table-responsive">
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th class="text-uppercase font-weight-bold">#</th>
+												<th class="text-uppercase font-weight-bold">Durasi</th>
+												<th class="text-uppercase font-weight-bold">Gejala</th>
+												<th class="text-uppercase font-weight-bold">Intensitas</th>
+												<th class="text-uppercase font-weight-bold">Output</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php $no = 1;
+											foreach ($listRule as $vals) : ?>
+												<tr>
+													<td><?= $no++ ?></td>
+													<td class="text-uppercase"><?= $vals['lokasi'] ?></td>
+													<td class="text-uppercase"><?= $vals['luas_tanah'] ?></td>
+													<td class="text-uppercase"><?= $vals['tipe_rumah'] ?></td>
+													<td class="text-uppercase font-weight-bold"><?= $vals['output'] ?></td>
+												</tr>
+
+
+											<?php endforeach; ?>
+
+
+
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
-						<?php if (isset($_POST['Submit'])): ?> 
-						<?php
+						<?php if (isset($_POST['Submit'])) : ?>
+							<?php
 							$temp_durasi = $_POST['durasi'];
 							$temp_gejala = $_POST['gejala'];
 							$temp_intensitas = $_POST['intensitas'];
@@ -272,24 +273,24 @@ $listRule = get_rules();
 							$def = defuzzifikasi($inferensi);
 							?>
 							<div class="card">
-							<div class="card-header header-elements-inline">
-								<h5 class="card-title font-weight-bold">Nilai Kelayakan</h5>
-								<div class="header-elements">
-									<div class="list-icons">
-										<a class="list-icons-item" data-action="collapse"></a>
-									
-										
+								<div class="card-header header-elements-inline">
+									<h5 class="card-title font-weight-bold">Nilai Kelayakan</h5>
+									<div class="header-elements">
+										<div class="list-icons">
+											<a class="list-icons-item" data-action="collapse"></a>
+
+
+										</div>
 									</div>
+								</div>
+
+								<div class="card-body">
+									<h3 class="font-weight-bold"><?php echo $def; ?></h3>
 								</div>
 							</div>
 
-							<div class="card-body">
-							<h3 class="font-weight-bold"><?php echo $def; ?></h3>
-							</div>
-						</div>
-							
-						
-						<?php endif; ?> 
+
+						<?php endif; ?>
 
 						<!-- /vertical form -->
 

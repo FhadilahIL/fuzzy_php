@@ -8,10 +8,10 @@ function defuzzifikasi($data)
     $titikSampel = titik_sampel();
     $hasilCuy = 0;
     //  var_dump($data);
-    foreach ($data as $covid) {
-    
-        foreach ($covid as $value) {
-            echo '<div class="mynumber2">NK '. $value['kategori'] .' = '. $value['nilai'] .'<br></div>';
+    foreach ($data as $data) {
+
+        foreach ($data as $value) {
+            echo '<div class="mynumber2">' . ucfirst($value['kategori']) . ' = ' . $value['nilai'] . '<br></div>';
             for ($z = 0; $z < count($titikSampel); $z++) {
                 if ($value['kategori'] == $titikSampel[$z]['kategori']) {
                     //   var_dump($value);
@@ -20,7 +20,6 @@ function defuzzifikasi($data)
                         // var_dump($titikSampel[$z]['sampel'][$y]);
                         $tambah = $nilaiSampel * $value['nilai'];
                         $hasilAtas = $hasilAtas + $tambah;
-                       
                     }
                     $bawah = count($titikSampel[$z]['sampel']);
                     //var_dump($bawah);
@@ -32,17 +31,17 @@ function defuzzifikasi($data)
         }
         $hasil = $hasilAtas / $hasilBawah;
     }
-    hasilAtas($hasilAtas,$hasilBawah);
+    hasilAtas($hasilAtas, $hasilBawah);
     //   var_dump($hasil);
     return $hasil;
 }
 
-function hasilAtas($pembilang,$penyebut)
+function hasilAtas($pembilang, $penyebut)
 {
     $atas = '';
     if ($atas === null) {
     } else {
-        $atas .= '<tr class="mynumber"><td>'. $pembilang .'</td><td>'.$penyebut.'</td>';
+        $atas .= '<tr class="mynumber"><td>' . $pembilang . '</td><td>' . $penyebut . '</td>';
     }
     // var_dump($mantap);
     echo $atas;

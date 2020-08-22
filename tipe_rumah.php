@@ -1,4 +1,4 @@
-<?php error_reporting(0); 
+<?php error_reporting(0);
 include 'fuzzifikasi.php';
 include 'get_rules.php';
 include 'inferensi.php';
@@ -49,6 +49,7 @@ $intensitas = intensitas($temp_intensitas);
 		#tabel .mynumber {
 			display: none;
 		}
+
 		#tabel2 .mynumber2 {
 			display: none;
 		}
@@ -201,41 +202,41 @@ $intensitas = intensitas($temp_intensitas);
 
 		<!-- Main content -->
 		<div class="content-wrapper">
-            <div class="card mt-5">
-                <div class="card-header header-elements-inline">
-                    <h5 class="card-title font-weight-bold">Tabel Lokasi Rumah</h5>
-                    <div class="header-elements">
-                        <div class="list-icons">
-                            <a class="list-icons-item" data-action="collapse"></a>
+			<div class="card mt-5">
+				<div class="card-header header-elements-inline">
+					<h5 class="card-title font-weight-bold">Tabel Lokasi Rumah</h5>
+					<div class="header-elements">
+						<div class="list-icons">
+							<a class="list-icons-item" data-action="collapse"></a>
 
-                        </div>
-                    </div>
-                </div>
+						</div>
+					</div>
+				</div>
 
-                <div class="card-body">
-                    <a href="" class="btn btn-primary mb-3">+ Tambah Luas Tanah</a>
-                    <table class="table table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Jenis Rumah</th>
-                    <th scope="col">Ukuran</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php $no = 1; 
-                    $data_rumah = mysqli_query($koneksi, "select * from tipe_rumah"); 
-                    while($data = mysqli_fetch_array($data_rumah)) { ?>
-                    <tr>
-                        <th scope="row"><?= $no++ ?>.</th>
-                        <td><?= $data['jenis_tiperumah'] ?></td>
-                        <td><?= $data['ukuran_tipe'] ?></td>
-                    </tr>
-                <?php } ?>
-                </tbody>
-                </table>
-                </div>
-            </div>
+				<div class="card-body">
+					<a href="" class="btn btn-primary mb-3">+ Tambah Luas Tanah</a>
+					<table class="table table-bordered">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Jenis Rumah</th>
+								<th scope="col">Ukuran</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php $no = 1;
+							$data_rumah = mysqli_query($koneksi, "select * from tipe_rumah");
+							while ($data = mysqli_fetch_array($data_rumah)) { ?>
+								<tr>
+									<th scope="row"><?= $no++ ?>.</th>
+									<td><?= $data['jenis_tiperumah'] ?></td>
+									<td><?= $data['ukuran_tipe'] ?></td>
+								</tr>
+							<?php } ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
 
 
 			<!-- Content area -->
@@ -403,7 +404,7 @@ $intensitas = intensitas($temp_intensitas);
 
 								<div class="card-body">
 									<div id="tabel">
-										<div class="table-responsive" >
+										<div class="table-responsive">
 											<table class="table table-striped">
 
 												<thead>

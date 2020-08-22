@@ -1,4 +1,4 @@
-<?php error_reporting(0); 
+<?php error_reporting(0);
 include 'fuzzifikasi.php';
 include 'get_rules.php';
 include 'inferensi.php';
@@ -6,12 +6,12 @@ include 'defuzzyfikasi.php';
 include 'koneksi.php';
 
 //var_dump($def);
-$temp_durasi = $_POST['durasi'];
-$temp_gejala = $_POST['gejala'];
-$temp_intensitas = $_POST['intensitas'];
-$durasi = durasi($temp_durasi);
-$gejala = gejala($temp_gejala);
-$intensitas = intensitas($temp_intensitas);
+$i_lokasi = $_POST['lokasi'];
+$i_luas_tanah = $_POST['luas_tanah'];
+$i_tipe_rumah = $_POST['tipe_rumah'];
+$lokasi = lokasi($i_lokasi);
+$luas_tanah = luas_tanah($i_luas_tanah);
+$tipe_rumah = tipe_rumah($i_tipe_rumah);
 //var_dump($gejala, $intensitas, $durasi);
 //die;
 //var_dump($def);
@@ -24,7 +24,7 @@ $intensitas = intensitas($temp_intensitas);
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Covid-19 Web-base Test</title>
+	<title>Fuzzy - Menghitung Kelayakan Rumah</title>
 
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -49,6 +49,7 @@ $intensitas = intensitas($temp_intensitas);
 		#tabel .mynumber {
 			display: none;
 		}
+
 		#tabel2 .mynumber2 {
 			display: none;
 		}
@@ -204,24 +205,12 @@ $intensitas = intensitas($temp_intensitas);
 
 			<!-- Page header -->
 			<div class="page-header page-header-light">
-				<div class="page-header-content header-elements-md-inline">
-					<div class="page-title d-flex">
-						<h4><span class="font-weight-semibold">TUBES AI</span> - Penentuan Covid-19 Menggunakan Fuzzy Mamdani</h4>
-						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-					</div>
-
-
-				</div>
-
 				<div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
 					<div class="d-flex">
 						<div class="breadcrumb">
 							<a href="index.html" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Dashboard</a>
 						</div>
-
 					</div>
-
-
 				</div>
 			</div>
 			<!-- /page header -->
@@ -256,24 +245,36 @@ $intensitas = intensitas($temp_intensitas);
 							<div class="card-body">
 								<form action="index.php" method="POST">
 									<div class="form-group">
-										<label>Lokasi</label>
-										<select class="form-control" name="durasi">
-										<?php $no = 1; 
-											$lokasi_rumah = mysqli_query($koneksi, "select * from lokasi"); 
-											while($data = mysqli_fetch_array($lokasi_rumah)) { ?>
-												<option value="<?= $data['ukuran_lokasi'] ?>"><?= $no++. '. ' . $data['nama_rumah'] .' - '. $data['ukuran_lokasi'].' m2' ?></option>
+										<label>Lokasi (KM)</label>
+										<select class="form-control" name="lokasi">
+											<?php $no = 1;
+											$lokasi_rumah = mysqli_query($koneksi, "select * from lokasi");
+											while ($data = mysqli_fetch_array($lokasi_rumah)) { ?>
+												<option value="<?= $data['ukuran_lokasi'] ?>"><?= $no++ . '. ' . $data['nama_rumah'] . ' - Jarak Ke Kota : ' . $data['ukuran_lokasi'] ?></option>
 											<?php } ?>
 										</select>
 									</div>
 
 									<div class="form-group">
-										<label>Gejala</label>
-										<input type="number" class="form-control" name="gejala">
+										<label>Luas Tanah (M<sup>2</sup>)</label>
+										<select class="form-control" name="luas_tanah">
+											<?php $no = 1;
+											$lokasi_rumah = mysqli_query($koneksi, "select * from luas_tanah");
+											while ($data = mysqli_fetch_array($lokasi_rumah)) { ?>
+												<option value="<?= $data['ukuran_tanah'] ?>"><?= $no++ . '. ' . $data['jenis_luas_tanah'] . ' - Ukuran Tanah : ' . $data['ukuran_tanah'] ?></option>
+											<?php } ?>
+										</select>
 									</div>
 
 									<div class="form-group">
-										<label>Intensitas Keluar Rumah</label>
-										<input type="number" class="form-control" name="intensitas">
+										<label>Tipe Rumah (M<sup>2</sup>)</label>
+										<select class="form-control" name="tipe_rumah">
+											<?php $no = 1;
+											$lokasi_rumah = mysqli_query($koneksi, "select * from tipe_rumah");
+											while ($data = mysqli_fetch_array($lokasi_rumah)) { ?>
+												<option value="<?= $data['ukuran_tipe'] ?>"><?= $no++ . '. ' . $data['jenis_tiperumah'] . ' - Ukuran Rumah : ' . $data['ukuran_tipe'] ?></option>
+											<?php } ?>
+										</select>
 									</div>
 
 									<div class="text-right">
@@ -284,13 +285,12 @@ $intensitas = intensitas($temp_intensitas);
 						</div>
 						<?php if (isset($_POST['Submit'])) : ?>
 							<?php
-							$temp_durasi = $_POST['durasi'];
-							$temp_gejala = $_POST['gejala'];
-							$temp_intensitas = $_POST['intensitas'];
-							//echo $temp_durasi .' '. $temp_gejala .' '. $temp_intensitas;
-							$durasi = durasi($temp_durasi);
-							$gejala = gejala($temp_gejala);
-							$intensitas = intensitas($temp_intensitas);
+							$i_lokasi = $_POST['lokasi'];
+							$i_luas_tanah = $_POST['luas_tanah'];
+							$i_tipe_rumah = $_POST['tipe_rumah'];
+							$lokasi = lokasi($i_lokasi);
+							$luas_tanah = luas_tanah($i_luas_tanah);
+							$tipe_rumah = tipe_rumah($i_tipe_rumah);
 							//	$inferensi = inferensi($durasi, $gejala, $intensitas);
 							//$tabel = tabel($no,$durasi,$gejala,$intensitas,$durasi);
 							//var_dump($tabel);
@@ -317,16 +317,16 @@ $intensitas = intensitas($temp_intensitas);
 
 											<thead>
 												<tr>
-													<th class="text-uppercase font-weight-bold">Durasi</th>
-													<th class="text-uppercase font-weight-bold">Gejala</th>
-													<th class="text-uppercase font-weight-bold">Intensitas</th>
+													<th class="text-uppercase font-weight-bold">Lokasi</th>
+													<th class="text-uppercase font-weight-bold">Luas Tanah</th>
+													<th class="text-uppercase font-weight-bold">Tipe Rumah</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
-													<td><?= $temp_durasi ?></td>
-													<td><?= $temp_gejala ?></td>
-													<td><?= $temp_intensitas ?></td>
+													<td><?= $i_lokasi ?> KM</td>
+													<td><?= $i_luas_tanah ?> M<sup>2</sup></td>
+													<td><?= $i_tipe_rumah ?> M<sup>2</sup></td>
 
 												</tr>
 											</tbody>
@@ -351,7 +351,7 @@ $intensitas = intensitas($temp_intensitas);
 										<div class="col-md-4">
 											<div class="table-responsive">
 												<table class="table table-striped">
-													<h3 class="text-uppercase text-center font-weight-bold">Durasi</h3>
+													<h3 class="text-uppercase text-center font-weight-bold">Lokasi</h3>
 													<thead>
 														<tr>
 															<th class="text-uppercase font-weight-bold">NILAI</th>
@@ -360,7 +360,7 @@ $intensitas = intensitas($temp_intensitas);
 													</thead>
 													<tbody>
 														<?php $no = 1;
-														foreach ($durasi as $vals) : ?>
+														foreach ($lokasi as $vals) : ?>
 															<tr>
 																<td class="text-uppercase"><?= $vals['nilai'] ?></td>
 																<td class="text-uppercase"><?= $vals['kategori'] ?></td>
@@ -373,7 +373,7 @@ $intensitas = intensitas($temp_intensitas);
 										<div class="col-md-4">
 											<div class="table-responsive">
 												<table class="table table-striped">
-													<h3 class="text-uppercase text-center font-weight-bold">Gejala</h3>
+													<h3 class="text-uppercase text-center font-weight-bold">Luas Tanah</h3>
 													<thead>
 														<tr>
 															<th class="text-uppercase font-weight-bold">NILAI</th>
@@ -382,7 +382,7 @@ $intensitas = intensitas($temp_intensitas);
 													</thead>
 													<tbody>
 														<?php $no = 1;
-														foreach ($gejala as $vals) : ?>
+														foreach ($luas_tanah as $vals) : ?>
 															<tr>
 																<td class="text-uppercase"><?= $vals['nilai'] ?></td>
 																<td class="text-uppercase"><?= $vals['kategori'] ?></td>
@@ -395,7 +395,7 @@ $intensitas = intensitas($temp_intensitas);
 										<div class="col-md-4">
 											<div class="table-responsive">
 												<table class="table table-striped">
-													<h3 class="text-uppercase text-center font-weight-bold">intensitas</h3>
+													<h3 class="text-uppercase text-center font-weight-bold">Tipe Rumah</h3>
 													<thead>
 														<tr>
 															<th class="text-uppercase font-weight-bold">NILAI</th>
@@ -404,7 +404,7 @@ $intensitas = intensitas($temp_intensitas);
 													</thead>
 													<tbody>
 														<?php $no = 1;
-														foreach ($intensitas as $vals) : ?>
+														foreach ($tipe_rumah as $vals) : ?>
 															<tr>
 																<td class="text-uppercase"><?= $vals['nilai'] ?></td>
 																<td class="text-uppercase"><?= $vals['kategori'] ?></td>
@@ -432,22 +432,22 @@ $intensitas = intensitas($temp_intensitas);
 
 								<div class="card-body">
 									<div id="tabel">
-										<div class="table-responsive" >
+										<div class="table-responsive">
 											<table class="table table-striped">
 
 												<thead>
 													<tr>
 														<th class="text-uppercase font-weight-bold">#</th>
-														<th class="text-uppercase font-weight-bold">Durasi</th>
-														<th class="text-uppercase font-weight-bold">Gejala</th>
-														<th class="text-uppercase font-weight-bold">Intensitas</th>
+														<th class="text-uppercase font-weight-bold">Lokasi</th>
+														<th class="text-uppercase font-weight-bold">Luas Tanah</th>
+														<th class="text-uppercase font-weight-bold">Tipe rumah</th>
 														<th class="text-uppercase font-weight-bold">Output</th>
 													</tr>
 												</thead>
 												<tbody>
 
 													<?php
-													$tabel = inferensi($durasi, $gejala, $intensitas);
+													$tabel = inferensi($lokasi, $luas_tanah, $tipe_rumah);
 													$def = defuzzifikasi($tabel);
 
 													?>
@@ -541,7 +541,7 @@ $intensitas = intensitas($temp_intensitas);
 
 				<div class="navbar-collapse collapse" id="navbar-footer">
 					<span class="navbar-text">
-						&copy; 2020 Tubes Artificial Intelligence - Fasilitas Kesehatan ( Penentuan Covid-19 dengan Fuzzy Mamdani )
+						&copy; 2020 Tubes Artificial Intelligence - Penentuan Nilai Kelayakan Rumah dengan Fuzzy Mamdani
 					</span>
 					</ul>
 				</div>
