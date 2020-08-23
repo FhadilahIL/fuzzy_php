@@ -16,7 +16,7 @@ $listRule = get_rules();
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Covid-19 Web-base Test</title>
+	<title>Rules - Menghitung Kelayakan Rumah</title>
 
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -78,10 +78,6 @@ $listRule = get_rules();
 
 					<div class="dropdown-menu dropdown-menu-right">
 						<a href="#" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>
-						<a href="#" class="dropdown-item"><i class="icon-coins"></i> My balance</a>
-						<a href="#" class="dropdown-item"><i class="icon-comment-discussion"></i> Messages <span class="badge badge-pill bg-blue ml-auto">58</span></a>
-						<div class="dropdown-divider"></div>
-						<a href="#" class="dropdown-item"><i class="icon-cog5"></i> Account settings</a>
 						<a href="#" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
 					</div>
 				</li>
@@ -114,27 +110,6 @@ $listRule = get_rules();
 			<!-- Sidebar content -->
 			<div class="sidebar-content">
 
-				<!-- User menu -->
-				<div class="sidebar-user">
-					<div class="card-body">
-						<div class="media">
-							<div class="mr-3">
-								<a href="#"><img src="assets/global_assets/images/image.png" width="38" height="38" class="rounded-circle" alt=""></a>
-							</div>
-
-							<div class="media-body">
-								<div class="media-title font-weight-semibold">Administrator</div>
-
-							</div>
-
-							<div class="ml-3 align-self-center">
-								<a href="#" class="text-white"><i class="icon-cog3"></i></a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /user menu -->
-
 				<!-- Main navigation -->
 				<div class="card card-sidebar-mobile">
 					<ul class="nav nav-sidebar" data-nav-type="accordion">
@@ -144,23 +119,23 @@ $listRule = get_rules();
 							<div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i>
 						</li>
 						<li class="nav-item">
-							<a href="index.php" class="nav-link">
-								<i class="icon-home4"></i>
-								<span>Dashboard</span>
-							</a>
+							<a href="index.php" class="nav-link"><i class="icon-home4"></i><span>Dashboard</span></a>
 						</li>
 						<li class="nav-item">
 							<a href="rules.php" class="nav-link"><i class="icon-stack"></i> <span>Rules</span></a>
 						</li>
-						<hr style="border: 1px solid white !important; width:250px;">
-						<!-- <li class="nav-item">
-							<a href="../full/changelog.html" class="nav-link">
-								<i class="icon-list-unordered"></i>
-								<span>Covid-19 Daily Report</span>
-
-							</a>
-						</li> -->
-						<!-- /main -->
+						<li class="nav-item">
+							<a href="lokasi.php" class="nav-link"><i class="icon-stack"></i> <span>Lokasi</span></a>
+						</li>
+						<li class="nav-item">
+							<a href="tipe_rumah.php" class="nav-link"><i class="icon-stack"></i> <span>Tipe Rumah</span></a>
+						</li>
+						<li class="nav-item">
+							<a href="luas_tanah.php" class="nav-link"><i class="icon-stack"></i> <span>Luas Tanah</span></a>
+						</li>
+						<li class="nav-item">
+							<a href="perhitungan.php" class="nav-link"><i class="icon-home4"></i> <span>Perhitungan Fuzzy</span></a>
+						</li>
 
 					</ul>
 				</div>
@@ -176,40 +151,8 @@ $listRule = get_rules();
 		<!-- Main content -->
 		<div class="content-wrapper">
 
-			<!-- Page header -->
-			<div class="page-header page-header-light">
-				<div class="page-header-content header-elements-md-inline">
-					<div class="page-title d-flex">
-						<h4><span class="font-weight-semibold">TUBES AI</span> - Penentuan Covid-19 Menggunakan Fuzzy Mamdani</h4>
-						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-					</div>
-
-
-				</div>
-
-				<div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
-					<div class="d-flex">
-						<div class="breadcrumb">
-							<a href="index.html" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Dashboard</a>
-						</div>
-
-					</div>
-
-
-				</div>
-			</div>
-			<!-- /page header -->
-
-
 			<!-- Content area -->
 			<div class="content">
-
-				<!-- Basic card -->
-
-
-
-				<!-- Basic table -->
-
 
 				<!-- Form layouts -->
 				<div class="row">
@@ -219,7 +162,7 @@ $listRule = get_rules();
 						<!-- Vertical form -->
 						<div class="card">
 							<div class="card-header header-elements-inline">
-								<h5 class="card-title font-weight-bold">Semua Rule</h5>
+								<h3 class="card-title font-weight-bold">Rule Yang Digunakan</h3>
 								<div class="header-elements">
 									<div class="list-icons">
 										<a class="list-icons-item" data-action="collapse"></a>
@@ -261,70 +204,37 @@ $listRule = get_rules();
 								</div>
 							</div>
 						</div>
-						<?php if (isset($_POST['Submit'])) : ?>
-							<?php
-							$temp_durasi = $_POST['durasi'];
-							$temp_gejala = $_POST['gejala'];
-							$temp_intensitas = $_POST['intensitas'];
-							$durasi = durasi($temp_durasi);
-							$gejala = gejala($temp_gejala);
-							$intensitas = intensitas($temp_intensitas);
-							$inferensi = inferensi($durasi, $gejala, $intensitas);
-							$def = defuzzifikasi($inferensi);
-							?>
-							<div class="card">
-								<div class="card-header header-elements-inline">
-									<h5 class="card-title font-weight-bold">Nilai Kelayakan</h5>
-									<div class="header-elements">
-										<div class="list-icons">
-											<a class="list-icons-item" data-action="collapse"></a>
-
-
-										</div>
-									</div>
-								</div>
-
-								<div class="card-body">
-									<h3 class="font-weight-bold"><?php echo $def; ?></h3>
-								</div>
-							</div>
-
-
-						<?php endif; ?>
-
-						<!-- /vertical form -->
 
 					</div>
+					<!-- /form layouts -->
+
 				</div>
-				<!-- /form layouts -->
+				<!-- /content area -->
+
+
+				<!-- Footer -->
+				<div class="navbar navbar-expand-lg navbar-light">
+					<div class="text-center d-lg-none w-100">
+						<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
+							<i class="icon-unfold mr-2"></i>
+							Footer
+						</button>
+					</div>
+
+					<div class="navbar-collapse collapse" id="navbar-footer">
+						<span class="navbar-text">
+							&copy; 2020 Tubes Artificial Intelligence - Fasilitas Kesehatan ( Penentuan Covid-19 dengan Fuzzy Mamdani )
+						</span>
+						</ul>
+					</div>
+				</div>
+				<!-- /footer -->
 
 			</div>
-			<!-- /content area -->
-
-
-			<!-- Footer -->
-			<div class="navbar navbar-expand-lg navbar-light">
-				<div class="text-center d-lg-none w-100">
-					<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
-						<i class="icon-unfold mr-2"></i>
-						Footer
-					</button>
-				</div>
-
-				<div class="navbar-collapse collapse" id="navbar-footer">
-					<span class="navbar-text">
-						&copy; 2020 Tubes Artificial Intelligence - Fasilitas Kesehatan ( Penentuan Covid-19 dengan Fuzzy Mamdani )
-					</span>
-					</ul>
-				</div>
-			</div>
-			<!-- /footer -->
+			<!-- /main content -->
 
 		</div>
-		<!-- /main content -->
-
-	</div>
-	<!-- /page content -->
+		<!-- /page content -->
 
 </body>
 

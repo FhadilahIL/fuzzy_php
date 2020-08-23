@@ -1,20 +1,5 @@
-<?php error_reporting(0); 
-include 'fuzzifikasi.php';
-include 'get_rules.php';
-include 'inferensi.php';
-include 'defuzzyfikasi.php';
+<?php
 include 'koneksi.php';
-
-//var_dump($def);
-$temp_durasi = $_POST['durasi'];
-$temp_gejala = $_POST['gejala'];
-$temp_intensitas = $_POST['intensitas'];
-$durasi = durasi($temp_durasi);
-$gejala = gejala($temp_gejala);
-$intensitas = intensitas($temp_intensitas);
-//var_dump($gejala, $intensitas, $durasi);
-//die;
-//var_dump($def);
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +9,7 @@ $intensitas = intensitas($temp_intensitas);
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Covid-19 Web-base Test</title>
+	<title>Lokasi - Menghitung Kelayakan Rumah</title>
 
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -49,6 +34,7 @@ $intensitas = intensitas($temp_intensitas);
 		#tabel .mynumber {
 			display: none;
 		}
+
 		#tabel2 .mynumber2 {
 			display: none;
 		}
@@ -94,10 +80,6 @@ $intensitas = intensitas($temp_intensitas);
 
 					<div class="dropdown-menu dropdown-menu-right">
 						<a href="#" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>
-						<a href="#" class="dropdown-item"><i class="icon-coins"></i> My balance</a>
-						<a href="#" class="dropdown-item"><i class="icon-comment-discussion"></i> Messages <span class="badge badge-pill bg-blue ml-auto">58</span></a>
-						<div class="dropdown-divider"></div>
-						<a href="#" class="dropdown-item"><i class="icon-cog5"></i> Account settings</a>
 						<a href="#" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
 					</div>
 				</li>
@@ -130,28 +112,6 @@ $intensitas = intensitas($temp_intensitas);
 			<!-- Sidebar content -->
 			<div class="sidebar-content">
 
-				<!-- User menu -->
-				<div class="sidebar-user">
-					<div class="card-body">
-						<div class="media">
-							<div class="mr-3">
-								<a href="#"><img src="assets/global_assets/images/image.png" width="38" height="38" class="rounded-circle" alt=""></a>
-							</div>
-
-							<div class="media-body">
-								<div class="media-title font-weight-semibold">Administrator</div>
-
-							</div>
-
-							<div class="ml-3 align-self-center">
-								<a href="#" class="text-white"><i class="icon-cog3"></i></a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /user menu -->
-
-
 				<!-- Main navigation -->
 				<div class="card card-sidebar-mobile">
 					<ul class="nav nav-sidebar" data-nav-type="accordion">
@@ -161,10 +121,7 @@ $intensitas = intensitas($temp_intensitas);
 							<div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i>
 						</li>
 						<li class="nav-item">
-							<a href="Dashboard" class="nav-link">
-								<i class="icon-home4"></i>
-								<span>Dashboard</span>
-							</a>
+							<a href="index.php" class="nav-link"><i class="icon-home4"></i><span>Dashboard</span></a>
 						</li>
 						<li class="nav-item">
 							<a href="rules.php" class="nav-link"><i class="icon-stack"></i> <span>Rules</span></a>
@@ -178,15 +135,9 @@ $intensitas = intensitas($temp_intensitas);
 						<li class="nav-item">
 							<a href="luas_tanah.php" class="nav-link"><i class="icon-stack"></i> <span>Luas Tanah</span></a>
 						</li>
-						<hr style="border: 1px solid white !important; width:250px;">
-						<!-- <li class="nav-item">
-							<a href="../full/changelog.html" class="nav-link">
-								<i class="icon-list-unordered"></i>
-								<span>Covid-19 Daily Report</span>
-
-							</a>
-						</li> -->
-						<!-- /main -->
+						<li class="nav-item">
+							<a href="perhitungan.php" class="nav-link"><i class="icon-home4"></i><span>Perhitungan Fuzzy</span></a>
+						</li>
 
 					</ul>
 				</div>
@@ -201,307 +152,147 @@ $intensitas = intensitas($temp_intensitas);
 
 		<!-- Main content -->
 		<div class="content-wrapper">
-            <div class="card mt-5">
-                <div class="card-header header-elements-inline">
-                    <h5 class="card-title font-weight-bold">Tabel Lokasi Rumah</h5>
-                    <div class="header-elements">
-                        <div class="list-icons">
-                            <a class="list-icons-item" data-action="collapse"></a>
+			<div class="card mt-5">
+				<div class="card-header header-elements-inline">
+					<h5 class="card-title font-weight-bold">Tabel Lokasi Rumah</h5>
+					<div class="header-elements">
+						<div class="list-icons">
+							<a class="list-icons-item" data-action="collapse"></a>
 
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <a href="" class="btn btn-primary mb-3">+ Tambah Lokasi</a>
-                    <table class="table table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nama Rumah</th>
-                    <th scope="col">Jenis Lokasi</th>
-                    <th scope="col">Ukuran Lokasi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php $no = 1; 
-                    $lokasi_rumah = mysqli_query($koneksi, "select * from lokasi"); 
-                    while($data = mysqli_fetch_array($lokasi_rumah)) { ?>
-                    <tr>
-                        <th scope="row"><?= $no++ ?>.</th>
-                        <td><?= $data['nama_rumah'] ?></td>
-                        <td><?= $data['jenis_lokasi'] ?></td>
-                        <td><?= $data['ukuran_lokasi'] ?></td>
-                    </tr>
-                <?php } ?>
-                </tbody>
-            </table>
-                </div>
-            </div>
-
-
-			<!-- Content area -->
-			<div class="content">
-
-				<!-- Basic card -->
-
-
-				<!-- Basic table -->
-
-
-				<!-- Form layouts -->
-				<div class="row">
-
-					<div class="col-md-12">
-
-						<!-- Vertical form -->
-						<?php if (isset($_POST['Submit'])) : ?>
-							<?php
-							$temp_durasi = $_POST['durasi'];
-							$temp_gejala = $_POST['gejala'];
-							$temp_intensitas = $_POST['intensitas'];
-							//echo $temp_durasi .' '. $temp_gejala .' '. $temp_intensitas;
-							$durasi = durasi($temp_durasi);
-							$gejala = gejala($temp_gejala);
-							$intensitas = intensitas($temp_intensitas);
-							//	$inferensi = inferensi($durasi, $gejala, $intensitas);
-							//$tabel = tabel($no,$durasi,$gejala,$intensitas,$durasi);
-							//var_dump($tabel);
-
-
-							?>
-
-							<div class="card">
-								<div class="card-header header-elements-inline">
-									<h5 class="card-title font-weight-bold">Nilai Input</h5>
-									<div class="header-elements">
-										<div class="list-icons">
-											<a class="list-icons-item" data-action="collapse"></a>
-
-
-										</div>
-									</div>
-								</div>
-
-								<div class="card-body">
-
-									<div class="table-responsive">
-										<table class="table table-striped">
-
-											<thead>
-												<tr>
-													<th class="text-uppercase font-weight-bold">Durasi</th>
-													<th class="text-uppercase font-weight-bold">Gejala</th>
-													<th class="text-uppercase font-weight-bold">Intensitas</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td><?= $temp_durasi ?></td>
-													<td><?= $temp_gejala ?></td>
-													<td><?= $temp_intensitas ?></td>
-
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-							<div class="card">
-								<div class="card-header header-elements-inline">
-									<h5 class="card-title font-weight-bold">Nilai Fuzzyfikasi</h5>
-									<div class="header-elements">
-										<div class="list-icons">
-											<a class="list-icons-item" data-action="collapse"></a>
-
-
-										</div>
-									</div>
-								</div>
-
-								<div class="card-body">
-									<div class="row">
-										<div class="col-md-4">
-											<div class="table-responsive">
-												<table class="table table-striped">
-													<h3 class="text-uppercase text-center font-weight-bold">Durasi</h3>
-													<thead>
-														<tr>
-															<th class="text-uppercase font-weight-bold">NILAI</th>
-															<th class="text-uppercase font-weight-bold">OUTPUT</th>
-														</tr>
-													</thead>
-													<tbody>
-														<?php $no = 1;
-														foreach ($durasi as $vals) : ?>
-															<tr>
-																<td class="text-uppercase"><?= $vals['nilai'] ?></td>
-																<td class="text-uppercase"><?= $vals['kategori'] ?></td>
-															</tr>
-														<?php endforeach; ?>
-													</tbody>
-												</table>
-											</div>
-										</div>
-										<div class="col-md-4">
-											<div class="table-responsive">
-												<table class="table table-striped">
-													<h3 class="text-uppercase text-center font-weight-bold">Gejala</h3>
-													<thead>
-														<tr>
-															<th class="text-uppercase font-weight-bold">NILAI</th>
-															<th class="text-uppercase font-weight-bold">OUTPUT</th>
-														</tr>
-													</thead>
-													<tbody>
-														<?php $no = 1;
-														foreach ($gejala as $vals) : ?>
-															<tr>
-																<td class="text-uppercase"><?= $vals['nilai'] ?></td>
-																<td class="text-uppercase"><?= $vals['kategori'] ?></td>
-															</tr>
-														<?php endforeach; ?>
-													</tbody>
-												</table>
-											</div>
-										</div>
-										<div class="col-md-4">
-											<div class="table-responsive">
-												<table class="table table-striped">
-													<h3 class="text-uppercase text-center font-weight-bold">intensitas</h3>
-													<thead>
-														<tr>
-															<th class="text-uppercase font-weight-bold">NILAI</th>
-															<th class="text-uppercase font-weight-bold">output</th>
-														</tr>
-													</thead>
-													<tbody>
-														<?php $no = 1;
-														foreach ($intensitas as $vals) : ?>
-															<tr>
-																<td class="text-uppercase"><?= $vals['nilai'] ?></td>
-																<td class="text-uppercase"><?= $vals['kategori'] ?></td>
-															</tr>
-														<?php endforeach; ?>
-													</tbody>
-												</table>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="card">
-								<div class="card-header header-elements-inline">
-									<h5 class="card-title font-weight-bold">Rules Yang Digunakan</h5>
-									<div class="header-elements">
-										<div class="list-icons">
-											<a class="list-icons-item" data-action="collapse"></a>
-
-
-										</div>
-									</div>
-								</div>
-
-								<div class="card-body">
-									<div id="tabel">
-										<div class="table-responsive" >
-											<table class="table table-striped">
-
-												<thead>
-													<tr>
-														<th class="text-uppercase font-weight-bold">#</th>
-														<th class="text-uppercase font-weight-bold">Durasi</th>
-														<th class="text-uppercase font-weight-bold">Gejala</th>
-														<th class="text-uppercase font-weight-bold">Intensitas</th>
-														<th class="text-uppercase font-weight-bold">Output</th>
-													</tr>
-												</thead>
-												<tbody>
-
-													<?php
-													$tabel = inferensi($durasi, $gejala, $intensitas);
-													$def = defuzzifikasi($tabel);
-
-													?>
-
-
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="card">
-								<div class="card-header header-elements-inline">
-									<h5 class="card-title font-weight-bold">Y*</h5>
-									<div class="header-elements">
-										<div class="list-icons">
-											<a class="list-icons-item" data-action="collapse"></a>
-
-
-										</div>
-									</div>
-								</div>
-
-								<div class="card-body">
-									<div class="table-responsive" id="tabel2">
-										<table class="table table-striped">
-
-											<thead>
-												<tr>
-													<th class="text-uppercase font-weight-bold">Pembilang</th>
-													<th class="text-uppercase font-weight-bold">Penyebut</th>
-												</tr>
-											</thead>
-											<tbody>
-
-												<?php
-
-												$penyebut = defuzzifikasi($tabel);
-
-												?>
-
-
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-
-
-
-
-							<div class="card">
-								<div class="card-header header-elements-inline">
-									<h5 class="card-title font-weight-bold">Nilai Kelayakan</h5>
-									<div class="header-elements">
-										<div class="list-icons">
-											<a class="list-icons-item" data-action="collapse"></a>
-
-
-										</div>
-									</div>
-								</div>
-
-								<div class="card-body">
-									<h3 class="font-weight-bold"><?php echo $def; ?></h3>
-								</div>
-							</div>
-
-
-						<?php endif; ?>
-
-						<!-- /vertical form -->
-
+						</div>
 					</div>
 				</div>
-				<!-- /form layouts -->
 
+				<div class="card-body">
+					<button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#staticT">+ Tambah Lokasi Rumah</button>
+					<table class="table table-bordered">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Nama Rumah</th>
+								<th scope="col">Jenis Lokasi</th>
+								<th scope="col">Ukuran Lokasi</th>
+								<th scope="col">Aksi</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php $no = 1;
+							$lokasi_rumah = mysqli_query($koneksi, "select * from lokasi");
+							while ($data = mysqli_fetch_array($lokasi_rumah)) { ?>
+								<tr>
+									<th scope="row"><?= $no++ ?>.</th>
+									<td><?= $data['nama_rumah'] ?></td>
+									<td><?= $data['jenis_lokasi'] ?></td>
+									<td><?= $data['ukuran_lokasi'] ?> KM</td>
+									<td>
+										<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#staticE<?= $data['id_lokasi'] ?>">Edit</button>
+										<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#staticD<?= $data['id_lokasi'] ?>">Delete</button>
+									</td>
+									<!-- Modal Edit -->
+									<div class="modal fade" id="staticE<?= $data['id_lokasi'] ?>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="staticBackdropLabel">Ubah Data Lokasi Rumah <strong><?= $data['nama_rumah'] ?></strong></h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<form method="POST" action="update_lokasi.php">
+														<div class="form-group row">
+															<label for="inputEmail3" class="col-sm-2 col-form-label">Nama Rumah</label>
+															<div class="col-sm-10">
+																<input type="text" class="form-control" name="nama_rumah" value="<?= $data['nama_rumah'] ?>" required>
+																<input type="hidden" class="form-control" name="id_lokasi" value="<?= $data['id_lokasi'] ?>">
+															</div>
+														</div>
+														<div class="form-group row">
+															<label for="inputEmail3" class="col-sm-2 col-form-label">Jenis Lokasi</label>
+															<div class="col-sm-10">
+																<input type="text" class="form-control" name="jenis_lokasi" value="<?= $data['jenis_lokasi'] ?>" required>
+															</div>
+														</div>
+														<div class="form-group row">
+															<label for="inputEmail3" class="col-sm-2 col-form-label">Ukuran Lokasi</label>
+															<div class="col-sm-10">
+																<input type="number" class="form-control" name="ukuran_lokasi" value="<?= $data['ukuran_lokasi'] ?>" required>
+															</div>
+														</div>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+													<button type="submit" class="btn btn-primary">Ya, Update</button>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- Modal Hapus -->
+									<div class="modal fade" id="staticD<?= $data['id_lokasi'] ?>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="staticBackdropLabel">Hapus Data Lokasi Rumah <strong><?= $data['nama_rumah'] ?></strong></h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<p>Apakah Anda Yakin Ingin Menghapus Data Lokasi <strong><?= $data['nama_rumah'] ?></strong> dengan Ukuran Lokasi <strong><?= $data['ukuran_lokasi'] ?> KM</strong> ?</p>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+													<a href="delete_lokasi.php?id=<?= $data['id_lokasi'] ?>" class="btn btn-primary">Ya, Delete</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</tr>
+							<?php } ?>
+						</tbody>
+					</table>
+					<!-- Modal Tambah -->
+					<div class="modal fade" id="staticT" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="staticBackdropLabel">Tambah Data Lokasi</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form method="POST" action="tambah_lokasi.php">
+										<div class="form-group row">
+											<label for="inputEmail3" class="col-sm-2 col-form-label">Nama Rumah</label>
+											<div class="col-sm-10">
+												<input type="text" class="form-control" name="nama_rumah" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="inputEmail3" class="col-sm-2 col-form-label">Jenis Lokasi</label>
+											<div class="col-sm-10">
+												<input type="text" class="form-control" name="jenis_lokasi" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="inputEmail3" class="col-sm-2 col-form-label">Ukuran Lokasi</label>
+											<div class="col-sm-10">
+												<input type="number" class="form-control" name="ukuran_lokasi" required>
+											</div>
+										</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									<button type="submit" class="btn btn-primary">Ya, Simpan Data</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<!-- /content area -->
-
 
 			<!-- Footer -->
 			<div class="navbar navbar-expand-lg navbar-light">
